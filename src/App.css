@@ -1,14 +1,42 @@
-.App {
+.app {
   text-align: center;
 }
 
-.App-header {
+.header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.header__text {
+  font-size: calc(10px + 5vmin);
   color: white;
+  margin: 0.5em;
+}
+
+.search-form {
+  background-color: #bcc5d6;
+}
+
+.search-form__input {
+  display: block;
+  width: 100vw;
+  border: none;
+  border-bottom: 1px solid gray;
+  background: transparent;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  padding: 1em;
+}
+
+.search-form__input:focus {
+  outline: none;
+  border-bottom-color: black;
+}
+
+.search-form__input:focus::placeholder {
+  color: #444;
 }
