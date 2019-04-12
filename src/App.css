@@ -17,11 +17,11 @@
   margin: 0.5em;
 }
 
-.search-form {
+.search {
   background-color: #bcc5d6;
 }
 
-.search-form__input {
+.search__input {
   display: block;
   width: 100vw;
   border: none;
@@ -32,11 +32,11 @@
   padding: 1em;
 }
 
-.search-form__input:focus {
+.search__input:focus {
   outline: none;
   border-bottom-color: black;
 }
 
-.search-form__input:focus::placeholder {
+.search__input:focus::placeholder {
   color: #444;
 }
