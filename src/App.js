@@ -3,18 +3,24 @@ import './App.css';
 
 const API_KEY = 'YOUR_API_KEY';
 
+const encodeParams = (params = {}) => {
+  let esc = encodeURIComponent;
+  return Object.keys(params)
+    .map(k => esc(k) + '=' + esc(params[k]))
+    .join('&');
+}
+
 const callMovieDB = (route, params = {}) => {
   let url = 'https://api.themoviedb.org/3';
   url += route.startsWith('/') ? route : '/' + route;
-  
-  let esc = encodeURIComponent;
-  let query = Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
-    .join('&');
+
+  let fullUrl = `${url}?api_key=${API_KEY}`;
+  let query = encodeParams(params);
   if (query.length > 0) {
-    query = '&' + query;
+    fullUrl += '&' + query;
   }
-  return fetch(`${url}?api_key=${API_KEY}${query}`)
+
+  return fetch(fullUrl)
     .then(response => response.json());
 }
 
