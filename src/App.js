@@ -1,62 +1,42 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import { API_KEY } from './config'
+import { fetchMovieSuggestions } from './api'
 
-const encodeParams = (params = {}) => {
-  let esc = encodeURIComponent;
-  return Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
-    .join('&');
-}
-
-const callMovieDB = (route, params = {}) => {
-  let url = 'https://api.themoviedb.org/3';
-  url += route.startsWith('/') ? route : '/' + route;
-
-  let fullUrl = `${url}?api_key=${API_KEY}`;
-  let query = encodeParams(params);
-  if (query.length > 0) {
-    fullUrl += '&' + query;
-  }
-
-  return fetch(fullUrl)
-    .then(response => response.json());
-}
-
-// returns array of objects with the following structure:
-//   id: movie id
-//   title: movie title
-const fetchMovieSuggestions = (query, limit = 5) => {
-  return callMovieDB('/search/movie', {query, include_adult: false})
-    .then(movies => {
-      let list = movies.results;
-      let suggestions = [];
-      for (let i = 0; i < Math.min(limit, list.length); i++) {
-        const { id, title } = list[i];
-        suggestions.push({ id, title });
-      }
-      return suggestions;
-    })
-    .catch(err => {
-      console.error(err);
-      return [];
-    });
-};
+const MovieItem = ({ title, overview, release_date, poster_path }) => (
+  <section className="movie">
+    <h2 className="movie__title">{title}</h2>
+    <div className="movie__overview">{overview}</div>
+    {poster_path && (
+      <img src={`http://image.tmdb.org/t/p/w185/${poster_path}`} alt="Movie poster" className="movie__poster"/>
+    )}
+    <div className="movie__release">Release date: {release_date}</div>
+  </section>
+)
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      query: '',
       suggestions: [],
-      query: ''
+      selected: null
     };
   }
 
   onQueryChange = e => {
     let query = e.target.value;
     this.setState({ query });
+  }
+
+  onInput = e => {
+    const { suggestions } = this.state;
+    const { value } = e.nativeEvent.target;
+
+    const selected = suggestions.find(sug => sug.title === value)
+
+    this.setState({ selected });
   }
 
   onSubmit = e => {
@@ -69,7 +49,7 @@ class App extends Component {
   }
 
   render() {
-    let { query, suggestions } = this.state;
+    let { query, suggestions, selected } = this.state;
 
     return (
       <div className="app">
@@ -80,7 +60,8 @@ class App extends Component {
         </header>
         <form className="search" onSubmit={this.onSubmit}>
           <input className="search__input" autoFocus={true}
-            placeholder="Type to search movie title..." onChange={this.onQueryChange}
+            placeholder="Type to search movie title..."
+            onChange={this.onQueryChange} onInput={this.onInput}
             value={query} list="suggestions" id="query" name="query"/>
           <datalist id="suggestions">
             {suggestions.map(({ id, title }) =>
@@ -88,6 +69,9 @@ class App extends Component {
             )}
           </datalist>
         </form>
+        {selected && (
+          <MovieItem {...selected}/>
+        )}
       </div>
     );
   }

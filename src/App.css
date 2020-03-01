@@ -40,3 +40,15 @@
 .search__input:focus::placeholder {
   color: #444;
 }
+
+.movie {
+  margin: 10px;
+}
+
+.movie__overview {
+  text-align: left;
+}
+
+.movie__poster {
+  margin: 10px 0;
+}
