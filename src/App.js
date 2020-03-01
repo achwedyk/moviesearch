@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-const API_KEY = 'YOUR_API_KEY';
+import { API_KEY } from './config'
 
 const encodeParams = (params = {}) => {
   let esc = encodeURIComponent;
