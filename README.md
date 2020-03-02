@@ -1,12 +1,13 @@
 # Movie Search
 
-Application to search the movies based on the query.
+Application to search the movies based on the text query.
 It uses The Movie DB API.
 
 ## Pre-requisities
 
-Before the usage you need to request the API key by registering from https://www.themoviedb.org/settings/api
-Update the key in the `src/config.js` file.
+Before the usage:
+- request the API key by registering on https://www.themoviedb.org/settings/api
+- update the key in the `src/config.js` file
 
 ## Available Scripts
 
