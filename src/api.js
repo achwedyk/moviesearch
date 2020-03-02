@@ -27,13 +27,16 @@ const compareByPopularity = (left, right) => {
   return a > b ? -1 : a < b ? 1 : 0;
 }
 
+export const orderByPopularity = list => {
+  return list.sort(compareByPopularity);
+}
+
 // returns array of objects with the structure as defined in
 // https://developers.themoviedb.org/3/getting-started/search-and-query-for-details
 export const fetchMovieSuggestions = (query, limit = 5) => {
   return callMovieDB('/search/movie', {query, include_adult: false})
     .then(movies => {
-      const list = movies.results;
-      let ordered = list.sort(compareByPopularity);
+      let ordered = orderByPopularity(movies.result);
       return ordered.slice(0, limit);
     })
     .catch(err => {
